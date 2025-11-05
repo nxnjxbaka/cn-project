@@ -9,43 +9,34 @@ function runSimulation() {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Set font and style
+    // Set font
     ctx.font = "14px Segoe UI";
     ctx.textBaseline = "middle";
     ctx.lineWidth = 2;
 
-    const ySender = 100, yReceiver = 300;
-    const unitWidth = 60;
+    const ySender = 80, yReceiver = 300;
+    const margin = 80;
+    const availableWidth = canvas.width - 2 * margin;
+    const totalTimeUnits = (2 * T) * N + 4; // extra for errors
+    const unitWidth = Math.max(20, availableWidth / totalTimeUnits);
 
-    // Draw sender & receiver timelines
+    // Draw timelines
     ctx.strokeStyle = "#aaa";
     ctx.beginPath();
-    ctx.moveTo(60, ySender);
-    ctx.lineTo(canvas.width - 20, ySender);
-    ctx.moveTo(60, yReceiver);
-    ctx.lineTo(canvas.width - 20, yReceiver);
+    ctx.moveTo(margin, ySender);
+    ctx.lineTo(canvas.width - margin, ySender);
+    ctx.moveTo(margin, yReceiver);
+    ctx.lineTo(canvas.width - margin, yReceiver);
     ctx.stroke();
 
     ctx.fillStyle = "#333";
     ctx.fillText("Sender", 10, ySender);
     ctx.fillText("Receiver", 10, yReceiver);
 
-    // Draw vertical markers for time units
-    for (let i = 0; i <= 20; i++) {
-        let x = 80 + i * unitWidth;
-        ctx.strokeStyle = "#eee";
-        ctx.beginPath();
-        ctx.moveTo(x, ySender - 5);
-        ctx.lineTo(x, yReceiver + 5);
-        ctx.stroke();
-        ctx.fillStyle = "#aaa";
-        ctx.fillText(i, x - 3, ySender - 15);
-    }
-
     let events = [];
     let time = 0;
 
-    // Build events with error simulation
+    // Build events with simulated errors
     for (let i = 1; i <= N; i++) {
         let e = {
             frame: i,
@@ -80,11 +71,11 @@ function runSimulation() {
     }
 
     const drawFrame = (f) => {
-        const x1 = 80 + f.send * unitWidth;
-        const x2 = 80 + f.recv * unitWidth;
+        const x1 = margin + f.send * unitWidth;
+        const x2 = margin + f.recv * unitWidth;
         const y1 = ySender, y2 = yReceiver;
 
-        // FRAME ARROW
+        // FRAME
         ctx.strokeStyle = f.error === "feedback_lost" ? "red" : "#007acc";
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -95,12 +86,12 @@ function runSimulation() {
         ctx.fillText("Frame " + f.frame, x1 + 5, y1 - 15);
         if (f.error === "feedback_lost") {
             ctx.fillStyle = "red";
-            ctx.fillText("Frame Lost!", x2 + 10, y2);
+            ctx.fillText("Frame Lost!", x2 + 5, y2 + 15);
         }
 
-        // ACK ARROW
-        const xa1 = 80 + f.ackSend * unitWidth;
-        const xa2 = 80 + f.ackRecv * unitWidth;
+        // ACK
+        const xa1 = margin + f.ackSend * unitWidth;
+        const xa2 = margin + f.ackRecv * unitWidth;
         ctx.strokeStyle = (f.error === "ack_lost" || f.error === "ack_timeout") ? "orange" : "#28a745";
         ctx.beginPath();
         ctx.moveTo(xa1, y2);
@@ -111,13 +102,13 @@ function runSimulation() {
         ctx.fillText("ACK " + f.frame, xa1 + 5, y2 + 15);
         if (f.error === "ack_lost") {
             ctx.fillStyle = "orange";
-            ctx.fillText("ACK Lost!", xa2 + 10, y1 - 15);
+            ctx.fillText("ACK Lost!", xa2 + 5, y1 - 15);
         } else if (f.error === "ack_timeout") {
             ctx.fillStyle = "orange";
-            ctx.fillText("ACK Timeout!", xa2 + 10, y1 - 15);
+            ctx.fillText("ACK Timeout!", xa2 + 5, y1 - 15);
         }
 
-        // RETRANSMISSION
+        // RESEND
         if (f.resend) {
             const resendX1 = xa2 + 1 * unitWidth;
             const resendX2 = resendX1 + T * unitWidth;
@@ -138,7 +129,7 @@ function runSimulation() {
             drawFrame(events[i]);
             i++;
             if (i >= events.length) clearInterval(interval);
-        }, 1000);
+        }, 800);
     } else {
         for (const f of events) drawFrame(f);
     }
