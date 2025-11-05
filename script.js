@@ -153,3 +153,45 @@ function drawArrowHead(ctx, x, y, angle) {
     ctx.lineTo(x - len * Math.cos(angle + 0.3), y - len * Math.sin(angle + 0.3));
     ctx.stroke();
 }
+function showDevelopedBy() {
+    alert(
+`Team Members:
+1. Niranjan Kumar S - 24BCE1769
+2. Subhasri Balachandiran - 24BCE1833
+3. Ranse Roger J - 24BCE1531
+
+Supervisor/Mentor: DR. SWAMINATHAN`
+    );
+}
+
+function showHelp() {
+    alert(
+`How to use the simulator:
+1. Enter number of frames, window size, time per frame.
+2. Select error type.
+3. Click Simulate.
+4. The timeline diagram and stats will be displayed below.`
+    );
+}
+
+function downloadSummary() {
+    const summary = `
+Sliding Window Protocol Simulator Summary
+
+Number of Frames: ${document.getElementById("numFrames").value}
+Window Size: ${document.getElementById("winSize").value}
+Time per Frame: ${document.getElementById("timePerFrame").value}
+Total Frames Transmitted: ${document.getElementById("framesTx").innerText}
+Total ACKs Sent: ${document.getElementById("acksTx").innerText}
+Total Time Units: ${document.getElementById("totalTime").innerText}
+Efficiency: ${document.getElementById("efficiency").innerText}
+`;
+    const blob = new Blob([summary], {type: "text/plain"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "simulation_summary.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
