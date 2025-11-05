@@ -1,59 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simplest Sliding Window Protocol Simulator</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header>
-      <h1>Simplest Sliding Window Protocol Simulator (With Errors)</h1>
-    </header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
     <div class="container">
-      <h2>Input Parameters</h2>
-      <form id="simForm">
-        <label>Number of Frames (N):</label>
-        <input type="number" id="numFrames" min="1" value="5" /><br />
 
-        <label>Window Size (W):</label>
-        <input type="number" id="winSize" min="1" value="1" /><br />
+        <h1 class="title">My Project</h1>
 
-        <label>Time per Frame (units):</label>
-        <input type="number" id="timePerFrame" min="1" value="2" /><br />
+        <!-- Your original UI goes here -->
+        <div class="content-box">
+            <p>This is where your existing interface / input / output / buttons will remain exactly the same.</p>
+            <p>(Replace this placeholder text with your actual project elements.)</p>
+        </div>
 
-        <label>Show Step Animation:</label>
-        <input type="checkbox" id="animate" checked /><br />
+        <!-- Team Info Card -->
+        <div class="team-card">
+            <h2>Project Team</h2>
+            <ul>
+                <li><strong>Niranjan Kumar S</strong> – 24BCE1769</li>
+                <li><strong>Subhasri Balachandiran</strong> – 24BCE1833</li>
+                <li><strong>Ranse Roger J</strong> – 24BCE1531</li>
+            </ul>
 
-        <label>Error Type:</label>
-        <select id="errorType">
-          <option value="none">No Error (Noiseless)</option>
-          <option value="ack_lost">ACK Not Received</option>
-          <option value="feedback_lost">Feedback Not Received</option>
-          <option value="ack_timeout">ACK Timeout</option>
-        </select><br />
+            <h3>Supervisor / Mentor</h3>
+            <p><strong>Dr. Swaminathan</strong></p>
+        </div>
 
-        <button type="button" onclick="runSimulation()">Simulate</button>
-      </form>
-
-      <h2>Timeline Diagram</h2>
-      <canvas id="timeline" width="1000" height="400"></canvas>
-
-      <div class="stats">
-        <h2>Summary Statistics</h2>
-        <table>
-          <tr><th>Metric</th><th>Value</th></tr>
-          <tr><td>Total Frames Transmitted</td><td id="framesTx"></td></tr>
-          <tr><td>Total ACKs Sent</td><td id="acksTx"></td></tr>
-          <tr><td>Total Time Units</td><td id="totalTime"></td></tr>
-          <tr><td>Efficiency</td><td id="efficiency"></td></tr>
-        </table>
-      </div>
-
-      <button id="downloadBtn" onclick="downloadReport()">Download Report</button>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+</body>
 </html>
