@@ -1,79 +1,41 @@
-/* General Reset */
-* {
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: system-ui, Arial, sans-serif;
-}
-
-/* Page Layout */
-body {
-    background: #f4f6f8;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 10px;
-}
-
-/* Main Centered Container */
-.container {
-    width: 100%;
-    max-width: 720px;
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-}
-
-/* Title */
-.title {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 25px;
-    color: #222;
-}
-
-/* Your content box (original UI stays here) */
-.content-box {
-    border: 1px solid #ddd;
-    padding: 18px;
-    border-radius: 8px;
-    margin-bottom: 28px;
     background: #fafafa;
-    font-size: 0.95rem;
+    text-align: center;
 }
 
-/* Team Info Card */
-.team-card {
-    border: 1px solid #dcdcdc;
-    padding: 18px 22px;
-    border-radius: 10px;
-    background: #ffffff;
+nav {
+    background: #e6e6e6;
+    padding: 12px;
 }
 
-.team-card h2 {
-    margin-bottom: 10px;
-    font-size: 1.3rem;
-    color: #333;
+nav a {
+    margin: 0 18px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
 }
 
-.team-card ul {
-    list-style: none;
-    margin: 10px 0 20px;
+h1 {
+    margin-top: 40px;
 }
 
-.team-card li {
-    margin: 4px 0;
-    font-size: 0.97rem;
+button {
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
-.team-card h3 {
-    margin-top: 10px;
-    font-size: 1.1rem;
-    color: #444;
+footer {
+    margin-top: 50px;
+    background: #f0f0f0;
+    padding: 20px 0;
+    font-size: 15px;
 }
 
-.team-card p {
-    margin-top: 5px;
-    font-size: 1rem;
+.names {
+    line-height: 1.6;
 }
