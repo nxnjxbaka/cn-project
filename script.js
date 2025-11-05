@@ -1,72 +1,187 @@
-body {
-  font-family: "Segoe UI", sans-serif;
-  background-color: #f3f3f3;
-  margin: 0;
-  padding: 0;
+function runSimulation() {
+  const N = parseInt(document.getElementById("numFrames").value);
+  const W = parseInt(document.getElementById("winSize").value);
+  const T = parseInt(document.getElementById("timePerFrame").value);
+  const animate = document.getElementById("animate").checked;
+  const errorType = document.getElementById("errorType").value;
+
+  const canvas = document.getElementById("timeline");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const ySender = 100, yReceiver = 300;
+  const unitWidth = 60;
+
+  // Draw timeline
+  ctx.strokeStyle = "#aaa";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(60, ySender);
+  ctx.lineTo(canvas.width - 20, ySender);
+  ctx.moveTo(60, yReceiver);
+  ctx.lineTo(canvas.width - 20, yReceiver);
+  ctx.stroke();
+
+  ctx.fillStyle = "#333";
+  ctx.fillText("Sender", 10, ySender + 5);
+  ctx.fillText("Receiver", 10, yReceiver + 5);
+
+  let events = [];
+  let time = 0;
+
+  // Build events with error simulation
+  for (let i = 1; i <= N; i++) {
+    let e = {
+      frame: i,
+      send: time,
+      recv: time + T,
+      ackSend: time + T,
+      ackRecv: time + 2 * T,
+      error: null,
+      resend: false
+    };
+
+    if (errorType === "feedback_lost" && i === 2) {
+      e.error = "feedback_lost";
+      e.resend = true;
+      e.ackRecv += 2 * T;
+      time = e.ackRecv;
+    } else if (errorType === "ack_lost" && i === 3) {
+      e.error = "ack_lost";
+      e.resend = true;
+      e.ackRecv += 2 * T;
+      time = e.ackRecv;
+    } else if (errorType === "ack_timeout" && i === 4) {
+      e.error = "ack_timeout";
+      e.resend = true;
+      e.ackRecv += 2 * T;
+      time = e.ackRecv;
+    } else {
+      time = e.ackRecv;
+    }
+
+    events.push(e);
+  }
+
+  const drawFrame = (f) => {
+    const x1 = 80 + f.send * unitWidth;
+    const x2 = 80 + f.recv * unitWidth;
+    const y1 = ySender, y2 = yReceiver;
+
+    // FRAME ARROW
+    ctx.strokeStyle = f.error === "feedback_lost" ? "red" : "#007acc";
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    drawArrowHead(ctx, x2, y2, Math.PI / 4);
+    ctx.fillStyle = "#000";
+    ctx.fillText("Frame " + f.frame, x1 + 5, y1 - 10);
+
+    if (f.error === "feedback_lost") {
+      ctx.fillStyle = "red";
+      ctx.fillText("Frame Lost!", x2 + 10, y2);
+    }
+
+    // ACK ARROW
+    const xa1 = 80 + f.ackSend * unitWidth;
+    const xa2 = 80 + f.ackRecv * unitWidth;
+    ctx.strokeStyle =
+      f.error === "ack_lost" || f.error === "ack_timeout" ? "orange" : "#28a745";
+    ctx.beginPath();
+    ctx.moveTo(xa1, y2);
+    ctx.lineTo(xa2, y1);
+    ctx.stroke();
+    drawArrowHead(ctx, xa2, y1, -Math.PI / 4);
+    ctx.fillStyle = "#000";
+    ctx.fillText("ACK " + f.frame, xa1 + 5, y2 + 15);
+
+    if (f.error === "ack_lost") {
+      ctx.fillStyle = "orange";
+      ctx.fillText("ACK Lost!", xa2 + 10, y1 - 10);
+    } else if (f.error === "ack_timeout") {
+      ctx.fillStyle = "orange";
+      ctx.fillText("ACK Timeout!", xa2 + 10, y1 - 10);
+    }
+
+    // RETRANSMISSION
+    if (f.resend) {
+      const resendX1 = xa2 + 1 * unitWidth;
+      const resendX2 = resendX1 + T * unitWidth;
+      ctx.strokeStyle = "purple";
+      ctx.beginPath();
+      ctx.moveTo(resendX1, y1);
+      ctx.lineTo(resendX2, y2);
+      ctx.stroke();
+      drawArrowHead(ctx, resendX2, y2, Math.PI / 4);
+      ctx.fillStyle = "purple";
+      ctx.fillText("Resend Frame " + f.frame, resendX1 + 5, y1 - 25);
+    }
+  };
+
+  if (animate) {
+    let i = 0;
+    const interval = setInterval(() => {
+      drawFrame(events[i]);
+      i++;
+      if (i >= events.length) clearInterval(interval);
+    }, 1000);
+  } else {
+    for (const f of events) drawFrame(f);
+  }
+
+  const framesTx = N + events.filter(e => e.resend).length;
+  const acksTx = N;
+  const efficiency = ((N / framesTx) * 100).toFixed(2) + "%";
+
+  document.getElementById("framesTx").innerText = framesTx;
+  document.getElementById("acksTx").innerText = acksTx;
+  document.getElementById("totalTime").innerText = time + " units";
+  document.getElementById("efficiency").innerText = efficiency;
 }
 
-header {
-  background: #1e88e5;
-  color: white;
-  padding: 15px;
-  text-align: center;
+// Download report as .txt
+function downloadReport() {
+  const N = document.getElementById("numFrames").value;
+  const W = document.getElementById("winSize").value;
+  const T = document.getElementById("timePerFrame").value;
+  const error = document.getElementById("errorType").value;
+
+  const framesTx = document.getElementById("framesTx").innerText;
+  const acksTx = document.getElementById("acksTx").innerText;
+  const totalTime = document.getElementById("totalTime").innerText;
+  const efficiency = document.getElementById("efficiency").innerText;
+
+  const text = `
+Name: Niranjan Kumar
+Reg No: 24BCE1769
+
+--- Input Parameters ---
+Number of Frames (N): ${N}
+Window Size (W): ${W}
+Time per Frame: ${T}
+Error Type: ${error}
+
+--- Output Statistics ---
+Total Frames Transmitted: ${framesTx}
+Total ACKs Sent: ${acksTx}
+Total Time Units: ${totalTime}
+Efficiency: ${efficiency}
+`;
+
+  const blob = new Blob([text], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "sliding_window_report.txt";
+  link.click();
 }
 
-.container {
-  background: white;
-  margin: 20px auto;
-  padding: 20px;
-  width: 80%;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-h2 {
-  color: #1e88e5;
-}
-
-label {
-  display: inline-block;
-  width: 180px;
-}
-
-input,
-select {
-  margin: 5px 0;
-  padding: 5px;
-}
-
-button {
-  background-color: #1e88e5;
-  color: white;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-canvas {
-  width: 100%;
-  border: 1px solid #ccc;
-  margin-top: 10px;
-  background: #fafafa;
-}
-
-.stats table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
-}
-
-#downloadBtn {
-  background-color: #43a047;
-  margin-top: 15px;
+function drawArrowHead(ctx, x, y, angle) {
+  const len = 8;
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x - len * Math.cos(angle - 0.3), y - len * Math.sin(angle - 0.3));
+  ctx.moveTo(x, y);
+  ctx.lineTo(x - len * Math.cos(angle + 0.3), y - len * Math.sin(angle + 0.3));
+  ctx.stroke();
 }
