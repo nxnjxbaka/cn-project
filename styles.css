@@ -95,3 +95,14 @@ th {
     background-color: #1e88e5;
     color: white;
 }
+
+.menu-buttons {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+}
+
+.menu-buttons button {
+    margin-left: 10px;
+}
+
