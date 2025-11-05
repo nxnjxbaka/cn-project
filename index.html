@@ -9,6 +9,13 @@
   <body>
     <header>
       <h1>Simplest Sliding Window Protocol Simulator (With Errors)</h1>
+
+      <div class="top-buttons">
+        <button onclick="openPopup('learnPopup')">Learn</button>
+        <button onclick="openPopup('devPopup')">Developed By</button>
+        <button onclick="openPopup('helpPopup')">Help</button>
+        <button onclick="downloadResults()">Download</button>
+      </div>
     </header>
 
     <div class="container">
@@ -49,6 +56,37 @@
           <tr><td>Total Time Units</td><td id="totalTime"></td></tr>
           <tr><td>Efficiency</td><td id="efficiency"></td></tr>
         </table>
+      </div>
+    </div>
+
+    <!-- POPUPS -->
+    <div id="learnPopup" class="popup">
+      <div class="popup-content">
+        <span class="close" onclick="closePopup('learnPopup')">&times;</span>
+        <h2>Learn</h2>
+        <p>Materials related to Sliding Window Protocol will be added here.</p>
+        <p>Textbook reference, explanation, and diagrams can be included later.</p>
+      </div>
+    </div>
+
+    <div id="devPopup" class="popup">
+      <div class="popup-content">
+        <span class="close" onclick="closePopup('devPopup')">&times;</span>
+        <h2>Developed By</h2>
+        <p><strong>Name:</strong> NIranjan Kumar</p>
+        <p><strong>Reg No:</strong> 24BCE1769</p>
+      </div>
+    </div>
+
+    <div id="helpPopup" class="popup">
+      <div class="popup-content">
+        <span class="close" onclick="closePopup('helpPopup')">&times;</span>
+        <h2>Help</h2>
+        <p>1. Enter the number of frames and window size.</p>
+        <p>2. Choose error type if needed.</p>
+        <p>3. Click "Simulate" to see the timeline.</p>
+        <p>4. Summary stats shown at the bottom.</p>
+        <p>5. Use "Download" to save results.</p>
       </div>
     </div>
 
