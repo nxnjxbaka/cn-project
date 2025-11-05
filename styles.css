@@ -8,29 +8,30 @@ body {
 header {
     background: #1e88e5;
     color: white;
-    padding: 15px;
+    padding: 15px 20px;
     text-align: center;
 }
 
 header h1 {
     margin: 0 0 10px 0;
-    font-size: 1.5em;
+    font-size: 1.6em;
 }
 
 .top-menu {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 15px;
 }
 
 .top-menu button {
     background-color: #ff9800;
     color: white;
-    padding: 6px 12px;
+    padding: 6px 14px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 .top-menu button:hover {
@@ -38,53 +39,59 @@ header h1 {
 }
 
 .container {
+    max-width: 1000px;
     background: white;
     margin: 20px auto;
-    padding: 20px;
-    width: 80%;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 h2 {
     color: #1e88e5;
+    margin-bottom: 15px;
 }
 
 label {
     display: inline-block;
-    width: 180px;
+    width: 200px;
+    font-weight: 500;
 }
 
 input, select {
-    margin: 5px 0;
-    padding: 5px;
+    margin: 6px 0;
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
-button {
+button[type="button"] {
+    margin-top: 15px;
     background-color: #1e88e5;
-    color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+    padding: 8px 16px;
 }
 
 canvas {
     width: 100%;
     border: 1px solid #ccc;
-    margin-top: 10px;
+    margin-top: 12px;
     background: #fafafa;
+    border-radius: 6px;
 }
 
-.stats table {
+table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 th, td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 10px;
     text-align: center;
+}
+
+th {
+    background-color: #1e88e5;
+    color: white;
 }
