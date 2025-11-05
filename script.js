@@ -166,41 +166,47 @@ Total ACKs Sent: ${acksTx}
 Total Time Units: ${totalTime}
 Efficiency
 
-// Add this function at the end of your existing script.js
+function showDevelopedBy() {
+    alert(
+`Team Members:
+1. Niranjan Kumar S - 24BCE1769
+2. Subhasri Balachandiran - 24BCE1833
+3. Ranse Roger J - 24BCE1531
+
+Supervisor/Mentor: DR. SWAMINATHAN`
+    );
+}
+
+function showHelp() {
+    alert(
+`How to use the simulator:
+1. Enter number of frames, window size, time per frame.
+2. Select error type.
+3. Click Simulate.
+4. The timeline diagram and stats will be displayed below.`
+    );
+}
+
 function downloadSummary() {
-    const framesTx = document.getElementById("framesTx").innerText;
-    const acksTx = document.getElementById("acksTx").innerText;
-    const totalTime = document.getElementById("totalTime").innerText;
-    const efficiency = document.getElementById("efficiency").innerText;
+    const summary = `
+Sliding Window Protocol Simulator Summary
 
-    let content = `Simplest Sliding Window Protocol Simulator (With Errors)\n\n`;
-    content += `Summary Statistics:\n`;
-    content += `Total Frames Transmitted: ${framesTx}\n`;
-    content += `Total ACKs Sent: ${acksTx}\n`;
-    content += `Total Time Units: ${totalTime}\n`;
-    content += `Efficiency: ${efficiency}\n\n`;
-
-    content += `Instructions & Steps:\n`;
-    content += `1. Input your parameters: Number of Frames, Window Size, Time per Frame, Error Type.\n`;
-    content += `2. Click Simulate to view the timeline diagram.\n`;
-    content += `3. Check summary statistics below the diagram.\n`;
-    content += `4. This file contains the results and detailed steps for reference.\n\n`;
-
-    content += `Developed By:\n`;
-    content += `1. Niranjan Kumar S - 24BCE1769\n`;
-    content += `2. Subhasri Balachandiran - 24BCE1833\n`;
-    content += `3. Ranse Roger J - 24BCE1531\n`;
-    content += `Supervisor/Mentor: DR. SWAMINATHAN\n`;
-
-    // Create a Blob and download
-    const blob = new Blob([content], { type: "text/plain" });
+Number of Frames: ${document.getElementById("numFrames").value}
+Window Size: ${document.getElementById("winSize").value}
+Time per Frame: ${document.getElementById("timePerFrame").value}
+Total Frames Transmitted: ${document.getElementById("framesTx").innerText}
+Total ACKs Sent: ${document.getElementById("acksTx").innerText}
+Total Time Units: ${document.getElementById("totalTime").innerText}
+Efficiency: ${document.getElementById("efficiency").innerText}
+`;
+    const blob = new Blob([summary], {type: "text/plain"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "SlidingWindow_Summary.txt";
-    document.body.appendChild(a);
+    a.download = "simulation_summary.txt";
     a.click();
-    document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
+
+
 
