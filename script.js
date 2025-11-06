@@ -9,7 +9,6 @@ function runSimulation() {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Set font
     ctx.font = "14px Segoe UI";
     ctx.textBaseline = "middle";
     ctx.lineWidth = 2;
@@ -17,7 +16,7 @@ function runSimulation() {
     const ySender = 80, yReceiver = 300;
     const margin = 80;
     const availableWidth = canvas.width - 2 * margin;
-    const totalTimeUnits = (2 * T) * N + 4; // extra for errors
+    const totalTimeUnits = (2 * T) * N + 4;
     const unitWidth = Math.max(20, availableWidth / totalTimeUnits);
 
     // Draw timelines
@@ -36,7 +35,6 @@ function runSimulation() {
     let events = [];
     let time = 0;
 
-    // Build events with simulated errors
     for (let i = 1; i <= N; i++) {
         let e = {
             frame: i,
@@ -152,4 +150,42 @@ function drawArrowHead(ctx, x, y, angle) {
     ctx.moveTo(x, y);
     ctx.lineTo(x - len * Math.cos(angle + 0.3), y - len * Math.sin(angle + 0.3));
     ctx.stroke();
+}
+
+// ===== Added Functions =====
+function showDevelopedBy() {
+    alert(`Developed by:\nNiranjan Kumar S – 24BCE1769\nSubhasri Balachandiran – 24BCE1833\nRanse Roger J – 24BCE1531\n\nMentor: DR.SWAMINATHAN`);
+}
+
+function showHelp() {
+    alert(`Instructions:
+1. Enter the number of frames, window size, and time per frame.
+2. Choose error type if needed.
+3. Click 'Simulate' to run the sliding window simulation.
+4. Click 'Download' to save statistics as CSV.`);
+}
+
+function downloadData() {
+    const N = document.getElementById("numFrames").value;
+    const W = document.getElementById("winSize").value;
+    const T = document.getElementById("timePerFrame").value;
+    const framesTx = document.getElementById("framesTx").innerText;
+    const acksTx = document.getElementById("acksTx").innerText;
+    const totalTime = document.getElementById("totalTime").innerText;
+    const efficiency = document.getElementById("efficiency").innerText;
+
+    const csvContent = `Parameter,Value
+Number of Frames,${N}
+Window Size,${W}
+Time per Frame,${T}
+Total Frames Transmitted,${framesTx}
+Total ACKs Sent,${acksTx}
+Total Time Units,${totalTime}
+Efficiency,${efficiency}`;
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "sliding_window_stats.csv";
+    link.click();
 }
